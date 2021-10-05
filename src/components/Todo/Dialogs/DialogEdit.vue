@@ -60,7 +60,7 @@ export default {
                id: this.task.id,
                title: this.taskTitle
            }
-           this.$store.commit('updateTask', updatedTask);
+           this.$store.dispatch('updateTask', updatedTask);
            this.$emit('closeDialog'); // close modal
        }
    }
