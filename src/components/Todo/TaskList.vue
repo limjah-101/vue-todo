@@ -1,6 +1,6 @@
 <template>
     <v-list flat class="pt-0">
-        <task 
+        <task-item
             v-for="task in $store.state.tasks" 
             :key="task.id"
             :task="task"
@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import Task from './Task.vue';
+import TaskItem from './TaskItem.vue';
 
 export default {    
     components: {
-        'task': Task
+        'task-item': TaskItem
     }
 };
 </script>
