@@ -17,9 +17,9 @@
                     No
                 </v-btn>
                 <v-btn 
-                @click="$store.dispatch('deleteTask', task.id)"
-                color="red darken-1" 
-                text 
+                    @click="$store.dispatch('deleteTask', task.id)"
+                    color="red darken-1" 
+                    text 
                 >
                     Yes
                 </v-btn>
