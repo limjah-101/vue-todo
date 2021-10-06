@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <task-form />
-        <task-list v-if="$store.state.tasks.length" />
+        <task-list v-if="$store.getters.filteredTasks.length" />
         <no-task v-else />
     </div>
 </template>

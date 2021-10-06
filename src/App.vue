@@ -44,23 +44,17 @@
                 ></v-img>
             </template>
 
-            <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
-            <v-app-bar-title>Vuetify-Todo</v-app-bar-title>
-
-            <v-spacer></v-spacer>
-
-            <v-btn icon>
-                <v-icon>mdi-magnify</v-icon>
-            </v-btn>
-
-            <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-            </v-btn>
-
-            <v-btn icon>
-                <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
+            <v-container class="pa-0">
+                <v-row>
+                    <v-app-bar-nav-icon @click="drawer = !drawer" class="mt-2"></v-app-bar-nav-icon>
+                    <v-spacer></v-spacer>
+                    <search-bar />
+                </v-row>
+                <v-row>
+                    <v-app-bar-title class="ml-4">Vuetify-Todo</v-app-bar-title>                    
+                </v-row>
+            </v-container>
+                        
         </v-app-bar><!-- End_Navbar -->
 
         <v-main>            
@@ -73,6 +67,7 @@
 
 <script>
 import Snackbar from './components/Shared/Snackbar.vue';
+import SearchBarVue from './components/Tools/SearchBar.vue';
 
 export default {
     data: () => ({
@@ -84,7 +79,8 @@ export default {
         
     }),
     components: {
-        'snackbar': Snackbar
+        'snackbar': Snackbar,
+        'search-bar': SearchBarVue
     }
 };
 </script>

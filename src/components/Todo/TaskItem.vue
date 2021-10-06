@@ -38,7 +38,6 @@
 import TaskMenuVue from "./TaskMenu.vue";
 import { format } from 'date-fns'
 
-
 export default {
     props: ["task"],
 
