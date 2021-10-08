@@ -1,19 +1,35 @@
 <template>
     <v-list flat class="pt-0">
-        <task-item
-            v-for="task in $store.getters.filteredTasks" 
-            :key="task.id"
-            :task="task"
-        />        
+        <draggable 
+            v-model="tasks" 
+            handle=".handle">
+            <task-item
+                v-for="task in tasks"
+                :key="task.id"
+                :task="task"
+            />
+        </draggable>
     </v-list>
 </template>
 
 <script>
-import TaskItem from './TaskItem.vue';
+import TaskItem from "./TaskItem.vue";
+import draggable from "vuedraggable";
 
-export default {    
+export default {
     components: {
-        'task-item': TaskItem
-    }
+        "task-item": TaskItem,
+        draggable: draggable,
+    },
+    computed: {
+        tasks: {
+            get() {
+                return this.$store.getters.filteredTasks;
+            },
+            set(value) {
+                this.$store.commit("updateTasksAfterDragSorting", value);
+            },
+        },
+    },
 };
 </script>
