@@ -1,5 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import Localbase from "localbase";
+let db = new Localbase("db");
 
 Vue.use(Vuex);
 
@@ -8,45 +10,38 @@ export default new Vuex.Store({
         appName: process.env.VUE_APP_TITLE,
         search: null,
         tasks: [
-            {
-                id: 1,
-                title: "First task",
-                done: false,
-                dueDate: "2021-10-3",
-            },
-            {
-                id: 2,
-                title: "Move data to vue store",
-                done: false,
-                dueDate: "2021-10-21",
-            },
-            {
-                id: 3,
-                title: "Add date picker",
-                done: false,
-                dueDate: null,
-            },
+            // {
+            //     id: 1,
+            //     title: "First task",
+            //     done: false,
+            //     dueDate: "2021-10-3",
+            // },
+            // {
+            //     id: 2,
+            //     title: "Move data to vue store",
+            //     done: false,
+            //     dueDate: "2021-10-21",
+            // },
+            // {
+            //     id: 3,
+            //     title: "Add date picker",
+            //     done: false,
+            //     dueDate: null,
+            // },
         ],
         snackbar: {
             show: false,
             message: "",
-        }, 
-        sorting: false     
+        },
+        sorting: false,
     },
     mutations: {
-        addTask(state, newTaskTitle) {
-            if (newTaskTitle === "") return;
-
-            let newTask = {
-                id: Date.now(),
-                title: newTaskTitle,
-                done: false,
-                dueDate: null
-            };
-
+        addTask(state, newTask) {
+            // if (newTaskTitle === "") return;
             state.tasks.push(newTask);
         },
-        doneTask(state, id) {
+
+        markTaskAsDone(state, id) {
             let task = state.tasks.filter((task) => task.id === id)[0];
             task.done = !task.done;
         },
@@ -63,19 +58,20 @@ export default new Vuex.Store({
         },
 
         /**
-         * @desc Update tasks state after grad sorting
-         * @param {*} state 
-         * @param {*} tasks 
+         * @desc Update tasks state after drag sorting
+         * @param {object} state
+         * @param {object} tasks
          */
         updateTasksAfterDragSorting(state, tasks) {
-            console.log(tasks);            
+            state.tasks = tasks;
+        },
+
+        setTasks(state, tasks) {
             state.tasks = tasks;
         },
 
         updateTaskDueDate(state, payload) {
-            let task = state.tasks.filter(
-                (task) => task.id === payload.id
-            )[0];
+            let task = state.tasks.filter((task) => task.id === payload.id)[0];
             task.dueDate = payload.dueDate;
         },
 
@@ -97,21 +93,71 @@ export default new Vuex.Store({
             state.snackbar.show = false;
         },
 
-        setSearch(state, value) {            
+        setSearch(state, value) {
             state.search = value;
         },
         toggleSorting(state) {
             state.sorting = !state.sorting;
         },
-
-        
     },
 
     actions: {
-        addTask({ commit }, newTaskTitle) {
-            commit("addTask", newTaskTitle);
-            commit("showSnackbar", "Task added !");
+        /**
+         * @desc Retrive Tasks collection from index DB
+         * @param {*} param0
+         */
+         getTasksFormIndexDb({ commit }) {
+            db.collection("tasks")
+                .get()
+                .then((tasks) => {
+                    commit("setTasks", tasks);
+                });
         },
+
+        /**
+         * @dec Create new task item
+         * @param {*} param0 
+         * @param {*} newTaskTitle 
+         */
+        createTask({ commit }, newTaskTitle) {
+            try {
+                let newTask = {
+                    id: Date.now(),
+                    title: newTaskTitle,
+                    done: false,
+                    dueDate: null,
+                };
+                db.collection("tasks")
+                    .add(newTask)
+                    .then(() => {
+                        commit("addTask", newTask);
+                        commit("showSnackbar", "Task added !");
+                    });
+            } catch (error) {
+                //@Todo Handle error (example display error in popup or modal)
+                console.log(error);
+            }
+           
+        },
+        
+        /**
+         * @desc Update task done property
+         * @param {*} param0 
+         * @param {*} id 
+         */
+        markTaskAsDone({ state, commit }, id) {
+            let task = state.tasks.filter((task) => task.id === id)[0];
+
+            db.collection("tasks")
+                .doc({ id: id })
+                .update({
+                    done: !task.done,
+                })
+                .then(() => {
+                    commit("markTaskAsDone", id);
+                });
+        },
+
         deleteTask({ commit }, id) {
             commit("deleteTask", id);
             commit("showSnackbar", "Task deleted !");
@@ -126,14 +172,18 @@ export default new Vuex.Store({
             commit("updateTaskDueDate", updatedTask);
             commit("showSnackbar", "Task due date updated !");
         },
+
+        
     },
 
     getters: {
         filteredTasks(state) {
-            if(!state.search) return state.tasks;
-            
-            return state.tasks.filter(task => task.title.toLowerCase().includes(state.search.toLowerCase()))
-        }
+            if (!state.search) return state.tasks;
+
+            return state.tasks.filter((task) =>
+                task.title.toLowerCase().includes(state.search.toLowerCase())
+            );
+        },
     },
     modules: {},
 });

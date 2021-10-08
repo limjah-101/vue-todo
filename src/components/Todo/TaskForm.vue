@@ -1,7 +1,7 @@
 <template>
     <v-text-field
         v-model="newTaskTitle"        
-        @keyup.enter="addTask"
+        @keyup.enter="createTask"
         class="pa-3"
         outlined
         label="Add task"        
@@ -9,7 +9,7 @@
         clearable
     >
         <template v-slot:append>
-            <v-icon @click="addTask" color="primary" :disabled="isTitleValid">
+            <v-icon @click="createTask" color="primary" :disabled="isTitleValid">
                 mdi-plus
             </v-icon>
         </template>
@@ -30,7 +30,7 @@ export default {
     },
 
     methods: {
-        addTask() {
+        createTask() {
             if (this.isTitleValid) return;
             this.$store.dispatch("addTask", this.newTaskTitle);
             this.newTaskTitle = "";

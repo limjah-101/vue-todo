@@ -97,7 +97,11 @@ export default {
         snackbar: Snackbar,
         "search-bar": SearchBarVue,
         "live-date": LiveDateVue,
-    }    
+    },
+    mounted() {
+        // Fetch tasks from index DB
+        this.$store.dispatch('getTasksFormIndexDb');
+    }
 };
 </script>
 
