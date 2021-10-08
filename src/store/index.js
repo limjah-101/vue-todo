@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        appName: process.env.VUE_APP_TITLE,
         search: null,
         tasks: [
             {
@@ -29,7 +30,7 @@ export default new Vuex.Store({
         snackbar: {
             show: false,
             message: "",
-        },
+        }        
     },
     mutations: {
         addTask(state, newTaskTitle) {

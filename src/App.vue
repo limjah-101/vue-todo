@@ -66,7 +66,7 @@
                     <search-bar />
                 </v-row>
                 <v-row>
-                    <v-toolbar-title class="text-h4 font-weight-bold ml-4">VTasks</v-toolbar-title>
+                    <v-toolbar-title class="text-h4 font-weight-bold ml-4">{{ $store.state.appName }}</v-toolbar-title>
                 </v-row>
 
                 <live-date />
@@ -97,7 +97,7 @@ export default {
         snackbar: Snackbar,
         "search-bar": SearchBarVue,
         "live-date": LiveDateVue,
-    },
+    }    
 };
 </script>
 
