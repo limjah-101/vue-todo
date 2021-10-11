@@ -11,7 +11,7 @@
                 <v-avatar size="70" class="mb-2">
                     <img
                         src="https://cdn.vuetifyjs.com/images/john.jpg"
-                        alt="John"                        
+                        alt="John"
                     />
                 </v-avatar>
                 <div class="white--text text-subtitle-1 font-weight-bold">
@@ -47,12 +47,12 @@
             dark
             src="mountains.jpg"
             prominent
-            height="170"
+            :height="$route.path === '/' ? '230' : '170'"
         >
             <template v-slot:img="{ props }">
                 <v-img
                     v-bind="props"
-                    gradient="to top right, rgba(19,84,122,.5), rgba(128,208,199,.8)"
+                    gradient="to top right, rgba(19,84,122,.9), rgba(128,208,199,.9)"
                 ></v-img>
             </template>
 
@@ -66,10 +66,18 @@
                     <search-bar />
                 </v-row>
                 <v-row>
-                    <v-toolbar-title class="text-h4 font-weight-bold ml-4">{{ $store.state.appName }}</v-toolbar-title>
+                    <v-toolbar-title class="text-h4 font-weight-bold ml-4">{{
+                        $store.state.appName
+                    }}</v-toolbar-title>
                 </v-row>
 
-                <live-date />
+                <!--Live DateTime-->
+                <live-date /><!--End_Live_DateTime-->
+
+                <!-- New Task Input -->
+                <v-row v-if="$route.path === '/'">
+                    <task-form /> </v-row
+                ><!-- End_New Task Input -->
             </v-container> </v-app-bar
         ><!-- End_Navbar -->
 
@@ -82,6 +90,7 @@
 
 <script>
 import Snackbar from "./components/Shared/Snackbar.vue";
+import TaskFormVue from "./components/Todo/TaskForm.vue";
 import LiveDateVue from "./components/Tools/LiveDate.vue";
 import SearchBarVue from "./components/Tools/SearchBar.vue";
 
@@ -97,16 +106,17 @@ export default {
         snackbar: Snackbar,
         "search-bar": SearchBarVue,
         "live-date": LiveDateVue,
+        "task-form": TaskFormVue,
     },
     mounted() {
         // Fetch tasks from index DB
-        this.$store.dispatch('getTasksFormIndexDb');
-    }
+        this.$store.dispatch("getTasksFormIndexDb");
+    },
 };
 </script>
 
 <style scoped>
-    .header-container {
-        max-width: none;
-    }   
+.header-container {
+    max-width: none;
+}
 </style>

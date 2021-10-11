@@ -4,6 +4,7 @@
         @input="$store.commit('setSearch', $event)"
         @focus="searchClosed = false"
         @blur="searchClosed = true"
+        :disabled="isSorting"
         placeholder="Search" 
         filled 
         dense 
@@ -20,11 +21,14 @@ export default {
             term: '',
             searchClosed: true
         }
+    },
+    computed: {
+        isSorting() {
+            return this.$store.getters.getSorting;
+        }
     }
 };
 </script>
-
-
 
 <style>
 .v-text-field > .v-input__control > .v-input__slot:before, 

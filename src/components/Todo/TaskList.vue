@@ -26,8 +26,8 @@ export default {
             get() {
                 return this.$store.getters.filteredTasks;
             },
-            set(value) {
-                this.$store.commit("updateTasksAfterDragSorting", value);
+            set(orderedTasks) {
+                this.$store.dispatch("reorderTasksAfterDrag", orderedTasks);
             },
         },
     },

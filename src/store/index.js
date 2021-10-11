@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import Localbase from "localbase";
 let db = new Localbase("db");
+db.config.debug = false; // Disable console log
 
 Vue.use(Vuex);
 
@@ -15,19 +16,7 @@ export default new Vuex.Store({
             //     title: "First task",
             //     done: false,
             //     dueDate: "2021-10-3",
-            // },
-            // {
-            //     id: 2,
-            //     title: "Move data to vue store",
-            //     done: false,
-            //     dueDate: "2021-10-21",
-            // },
-            // {
-            //     id: 3,
-            //     title: "Add date picker",
-            //     done: false,
-            //     dueDate: null,
-            // },
+            // },           
         ],
         snackbar: {
             show: false,
@@ -62,7 +51,7 @@ export default new Vuex.Store({
          * @param {object} state
          * @param {object} tasks
          */
-        updateTasksAfterDragSorting(state, tasks) {
+        reorderTasksAfterDrag(state, tasks) {
             state.tasks = tasks;
         },
 
@@ -141,12 +130,12 @@ export default new Vuex.Store({
         },
         
         /**
-         * @desc Update task done property
+         * @desc Find and Update task done property
          * @param {*} param0 
          * @param {*} id 
          */
         markTaskAsDone({ state, commit }, id) {
-            let task = state.tasks.filter((task) => task.id === id)[0];
+            let task = state.tasks.filter(task => task.id === id)[0];
 
             db.collection("tasks")
                 .doc({ id: id })
@@ -158,20 +147,59 @@ export default new Vuex.Store({
                 });
         },
 
+        /**
+         * @desc Find and delete task
+         * @param {*} param0 
+         * @param {*} id 
+         */
         deleteTask({ commit }, id) {
-            commit("deleteTask", id);
-            commit("showSnackbar", "Task deleted !");
+            db.collection("tasks")
+                .doc({ id: id })
+                .delete()
+                .then(() => {
+                    commit("deleteTask", id);
+                    commit("showSnackbar", "Task deleted !");                                  
+                });
         },
 
+        /**
+         * @desc Find, update and persit task title
+         * @param {*} param0 
+         * @param {*} updatedTask 
+         */
         updateTask({ commit }, updatedTask) {
-            commit("updateTask", updatedTask);
-            commit("showSnackbar", "Task updated !");
+            db.collection("tasks")
+                .doc({ id: updatedTask.id })
+                .update({
+                    title: updatedTask.title,
+                })
+                .then(() => {
+                    commit("updateTask", updatedTask);
+                    commit("showSnackbar", "Task updated !");                    
+                });
         },
 
+        /**
+         * @desc Find, update and persit task due_date
+         * @param {*} param0 
+         * @param {*} updatedTask 
+         */
         updateTaskDueDate({ commit }, updatedTask) {
-            commit("updateTaskDueDate", updatedTask);
-            commit("showSnackbar", "Task due date updated !");
+            db.collection("tasks")
+                .doc({ id: updatedTask.id })
+                .update({
+                    dueDate: updatedTask.dueDate,
+                })
+                .then(() => {
+                    commit("updateTaskDueDate", updatedTask);
+                    commit("showSnackbar", "Task due date updated !");
+                });
         },
+
+        reorderTasksAfterDrag({ commit }, orderedTasks) {
+            db.collection("tasks").set(orderedTasks); // No asynchronious commit => remove glitch when draging task        
+            commit('reorderTasksAfterDrag', orderedTasks);                
+        }
 
         
     },
@@ -184,6 +212,10 @@ export default new Vuex.Store({
                 task.title.toLowerCase().includes(state.search.toLowerCase())
             );
         },
+
+        getSorting(state) {
+            return state.sorting
+        }
     },
     modules: {},
 });

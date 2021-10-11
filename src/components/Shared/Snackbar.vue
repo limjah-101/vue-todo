@@ -9,4 +9,9 @@
         </template>
     </v-snackbar>
 </template>
-
+<style>
+/** fix unable to see snackbar on android device  */
+div.v-snack:not(.v-snack--absolute) {
+    height: 100%;
+}
+</style>

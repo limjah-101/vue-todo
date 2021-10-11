@@ -4,25 +4,21 @@
             <v-card-title class="text-h5">
                 Edit Task
             </v-card-title>
-           
+
             <v-card-text>
-                Edit the title of the task  
-                <v-text-field v-model="taskTitle" @keyup.enter="updateTask"/>
+                Edit the title of the task
+                <v-text-field v-model="taskTitle" @keyup.enter="updateTask" />
             </v-card-text>
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn 
-                    @click="$emit('closeDialog')"
-                    color="grey darken-1" 
-                    text 
-                >
+                <v-btn @click="$emit('closeDialog')" color="grey darken-1" text>
                     Cancel
                 </v-btn>
-                <v-btn 
+                <v-btn
                     @click="updateTask"
                     :disabled="isTitleValid"
-                    color="red darken-1" 
+                    color="red darken-1"
                     text
                 >
                     Save
@@ -34,36 +30,30 @@
 
 <script>
 export default {
-   props: ['task'],
+    props: ["task"],
+    data: () => ({
+        taskTitle: null,
+    }),
+    mounted() {
+        this.taskTitle = this.task.title;
+    },
+    computed: {
+        isTitleValid() {
+            return !this.taskTitle || this.taskTitle === this.task.title;
+        },
+    },
+    methods: {
+        updateTask() {
+            if (this.isTitleValid) return;
 
-   data: () => ({
-       taskTitle: null
-   }),
-
-   mounted() {
-       this.taskTitle = this.task.title
-   },
-
-   computed: {
-       isTitleValid() {
-           return !this.taskTitle || this.taskTitle === this.task.title;
-       }
-   },
-
-   methods: {
-       
-       updateTask() {
-           if(this.isTitleValid)
-                return;
-
-           let updatedTask = {
-               id: this.task.id,
-               title: this.taskTitle
-           }
-           this.$store.dispatch('updateTask', updatedTask);
-           this.$emit('closeDialog'); // close modal
-       }
-   }
-
-}
+            let updatedTask = {
+                id: this.task.id,
+                title: this.taskTitle,
+            };
+            this.$store.dispatch("updateTask", updatedTask);
+            this.$emit("closeDialog"); // close modal
+            this.$vuetify.goTo(0, { duration: 0 }); // Scroll to top after edit
+        },
+    },
+};
 </script>

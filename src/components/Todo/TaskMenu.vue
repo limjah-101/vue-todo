@@ -79,21 +79,23 @@ export default {
                 title: "Sort",
                 icon: "mdi-drag-horizontal-variant",
                 onClick() {
-                    this.$store.commit('toggleSorting')
+                    if(!this.$store.state.search)
+                        this.$store.commit('toggleSorting');
+                    else
+                        this.$store.commit('showSnackbar', 'Sorry, unable to sort while searching !')
                 },
             },
         ],
     }),
     methods: {
         handleMenuClick(i) {
-            this.items[i].onClick.call(this); // pass this to onClick scope
+            this.items[i].onClick.call(this); // bind this to onClick scope
         },
     },
     components: {
         "dialog-edit": DialogEditVue,
         "dialog-delete": DialogDeleteVue,
-        "dialog-due-date": DialogDueDateVue,
-        
+        "dialog-due-date": DialogDueDateVue        
     },
     props: ["task"],
 };
