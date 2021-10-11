@@ -2,7 +2,7 @@
     <div>
         <v-menu bottom left>
             <template v-slot:activator="{ on, attrs }">
-                <v-btn color="primary" icon v-bind="attrs" v-on="on">
+                <v-btn color="grey" icon v-bind="attrs" v-on="on">
                     <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn>
             </template>
@@ -100,3 +100,4 @@ export default {
     props: ["task"],
 };
 </script>
+

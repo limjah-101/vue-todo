@@ -2,13 +2,13 @@
     <div>
         <v-list-item
             @click="$store.dispatch('markTaskAsDone', task.id)"
-            :class="{ 'blue lighten-5': task.done }"
+            :class="{ 'grey lighten-4': task.done }"
             :ripple="false"
             class="white"
         >
             <template v-slot:default="">
                 <v-list-item-action>
-                    <v-checkbox :input-value="task.done"></v-checkbox>
+                    <v-checkbox :input-value="task.done" color="light-blue"></v-checkbox>
                 </v-list-item-action>
 
                 <v-list-item-content>
@@ -22,18 +22,18 @@
 
                 <v-list-item-action v-if="task.dueDate">
                     <v-list-item-action-text>
-                        <v-icon small>mdi-calendar</v-icon>
-                        {{ task.dueDate | formatDate }}
+                        <v-icon small color="light-blue">mdi-calendar</v-icon>
+                        <span class="light-blue--text">{{ task.dueDate | formatDate }}</span>
                     </v-list-item-action-text>                   
                 </v-list-item-action>
 
                 <v-list-item-action>
-                    <task-menu :task="task" />
+                    <task-menu :task="task"/>
                 </v-list-item-action>
 
                 <!-- DRAGGABBLE_BTN -->
                 <v-list-item-action v-if="$store.state.sorting">
-                    <v-btn class="handle" color="primary" icon title="Drag to sort">
+                    <v-btn class="handle" color="light-blue" icon title="Drag to sort">
                         <v-icon>mdi-drag-horizontal-variant</v-icon>
                     </v-btn>
                 </v-list-item-action><!-- END_DRAGGABBLE_BTN -->

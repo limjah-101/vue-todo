@@ -1,9 +1,9 @@
 <template>
-    <v-snackbar v-model="$store.state.snackbar.show">
+    <v-snackbar v-model="$store.state.snackbar.show" color="light-blue lighten-2" outlined>
         {{ $store.state.snackbar.message }}
 
         <template v-slot:action="{ attrs }">
-            <v-btn text v-bind="attrs" @click="$store.commit('hideSnackbar')">
+            <v-btn text v-bind="attrs" @click="$store.commit('hideSnackbar')" color="grey lighten-1">
                 Close
             </v-btn>
         </template>

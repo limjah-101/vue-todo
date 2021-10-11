@@ -3,9 +3,9 @@
         <!-- Sidebar -->
         <v-navigation-drawer v-model="drawer" app :mobile-breakpoint="768">
             <v-img
-                src="mountains.jpg"
+                src="sea.jpg"
                 height="170"
-                gradient="to top right, rgba(19,84,122,.5), rgba(128,208,199,.8)"
+                gradient="to top right, rgba(19,84,122,.0), rgba(128,208,199,.0)"
                 class="pa-4 pt-6"
             >
                 <v-avatar size="70" class="mb-2">
@@ -15,10 +15,10 @@
                     />
                 </v-avatar>
                 <div class="white--text text-subtitle-1 font-weight-bold">
-                    John
+                    Coming
                 </div>
                 <div class="white--text text-subtitle-2">
-                    Doe
+                    Soon
                 </div>
             </v-img>
 
@@ -45,14 +45,14 @@
             app
             color="primary"
             dark
-            src="mountains.jpg"
+            src="sea.jpg"
             prominent
-            :height="$route.path === '/' ? '230' : '170'"
+            :height="$route.path === '/' ? '220' : '170'"
         >
             <template v-slot:img="{ props }">
                 <v-img
                     v-bind="props"
-                    gradient="to top right, rgba(19,84,122,.9), rgba(128,208,199,.9)"
+                    gradient="to top right,  rgba(0,0,0, .5),  rgba(0,0,0, .0)"
                 ></v-img>
             </template>
 

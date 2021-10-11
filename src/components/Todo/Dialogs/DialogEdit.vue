@@ -1,24 +1,23 @@
 <template>
     <v-dialog :value="true" persistent max-width="290">
         <v-card>
-            <v-card-title class="text-h5">
-                Edit Task
+            <v-card-title class="text-h5 light-blue--text">
+                Edit Task Title
             </v-card-title>
 
-            <v-card-text>
-                Edit the title of the task
-                <v-text-field v-model="taskTitle" @keyup.enter="updateTask" />
+            <v-card-text>               
+                <v-text-field v-model="taskTitle" @keyup.enter="updateTask" color="light-blue"/>
             </v-card-text>
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn @click="$emit('closeDialog')" color="grey darken-1" text>
+                <v-btn @click="$emit('closeDialog')" color="grey" text>
                     Cancel
                 </v-btn>
                 <v-btn
                     @click="updateTask"
                     :disabled="isTitleValid"
-                    color="red darken-1"
+                    color="light-blue"
                     text
                 >
                     Save

@@ -4,14 +4,14 @@
         :value="true"
         :return-value.sync="date"
         persistent
-        width="290px"
+        width="290px"              
     >        
-        <v-date-picker v-model="date" scrollable>
+        <v-date-picker v-model="date" scrollable header-color="light-blue" color="light-blue">
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="$emit('closeDialog')">
+            <v-btn text color="grey" @click="$emit('closeDialog')">
                 Cancel
             </v-btn>
-            <v-btn text color="primary" @click="saveTask">
+            <v-btn text color="light-blue" @click="saveTask">
                 OK
             </v-btn>
         </v-date-picker>
